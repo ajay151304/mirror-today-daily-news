@@ -1,7 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 export const Navbar = () => {
+  const [activeLi, setActiveLi] = useState(null);
+  const handleClick = (activeLi)=>{
+    setActiveLi(activeLi);
+  }
+
+  const getActiveClass = (isActive) => {
+    return isActive ? "nav-link active" : "nav-link";
+  }
+  const NAV_BAR_TABS = [
+    {general:  "HOME"},
+    {about: "ABOUT ME"},
+    {health: "HEALTH"},
+    {entertainment: "ENTERTAINMENT"},
+    {sports: "SPORTS"},
+    {business: "BUSINESS"},
+    {technology: "TECHNOLOGY"}
+  ]
+
+  const iterateNavBars = () => {
+    return  NAV_BAR_TABS.map((v)=>{
+      const keys = Object.keys(v);
+      const k = keys[0]
+        const to = "/"+k;
+        return (
+        <li className="nav-item" onClick={()=>handleClick(k)}>
+          <Link
+            className={getActiveClass(activeLi == k)} 
+            aria-current="page"
+            to={to}
+          >
+          {v[k]}
+          </Link>
+      </li>)
+    })
+
+  }
   return (
     <nav>
       <nav className="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
@@ -22,52 +58,7 @@ export const Navbar = () => {
           </button>
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-              <li className="nav-item">
-                <Link
-                  className="nav-link active"
-                  aria-current="page"
-                  to="/general"
-                >
-                  HOME
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/about">
-                  ABOUT
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link className="nav-link" to="/general">
-                  GENERAL
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/health">
-                  HEALTH
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/entertainment">
-                  ENTERTAINMENT
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/sports">
-                  SPORTS
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/business">
-                  BUSINESS
-                </Link>
-              </li>
-
-              <li className="nav-item">
-                <Link className="nav-link" to="/technology">
-                  TECHNOLOGY
-                </Link>
-              </li>
+              {iterateNavBars()}
             </ul>
           </div>
         </div>
